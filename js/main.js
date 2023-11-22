@@ -1,6 +1,7 @@
 (() => {
 
   //variables
+  
   const model = document.querySelector("#model"),
     hotspots = document.querySelectorAll(".Hotspot"),
     materialTemplate = document.querySelector("#material-template"),
@@ -38,11 +39,9 @@
       .then(response => response.json())
       .then(infoboxes => {
 
-        console.log(infoboxes);
-
         infoboxes.forEach((infoBox, index) => {
           let selected = document.querySelector(`#hotspot-${index + 1}`);
-         
+
           let heading = document.createElement('h2');
           heading.textContent = infoBox.heading;
 
@@ -57,33 +56,35 @@
         })
         hideSpinner();
       })
-      .catch(error => console.error(error));
+      .catch(error => {
+        console.error(error);
+        alert("Failed to load data, please try again later.");
+      });
   }
   loadInfo();
 
   function loadMaterialInfo() {
-    showSpinner();
     fetch("https://swiftpixel.com/earbud/api/materials")
       .then(response => response.json())
       .then(materials => {
-        console.log(materials);
 
         materials.forEach(material => {
 
           const clone = materialTemplate.content.cloneNode(true);
-          // populate the clone template
+
           const materialHeading = clone.querySelector(".material-heading");
           materialHeading.textContent = material.heading;
 
           const materialDescription = clone.querySelector(".material-description");
           materialDescription.textContent = material.description;
 
-          // Append the populated templagte to the list
           materialList.appendChild(clone);
         });
-        hideSpinner();
       })
-      .catch(error => console.error(error));
+      .catch(error => {
+        console.error(error);
+        alert("Failed to load data, please try again later.");
+      });
   }
 
   loadMaterialInfo();
